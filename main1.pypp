@@ -1,0 +1,37 @@
+import os;
+import time;
+
+def greet(name) {
+    print("Hello, " + name);
+}
+
+print("brython");
+print("test");
+v = {}
+
+be = "1988";
+
+def hello() {
+    print(f"hello tester {be}");
+}
+
+hello();
+
+if True {
+    greet("Alice");
+    greet("Bob");
+}
+
+class Person {
+    def __init__(self, name, age) {
+        self.name = name;
+        self.age = age;
+    }
+
+    def introduce(self) {
+        print("My name is " + self.name + " and I am " + str(self.age) + " years old.");
+    }
+}
+
+p = Person("Charlie", 25);
+p.introduce();
