@@ -1,7 +1,6 @@
 import re
 import ast
 
-
 class BryInterpreter:
     def __init__(self):
         pass
@@ -16,6 +15,10 @@ class BryInterpreter:
             line = line.strip()
 
             if not line:
+                continue
+
+            if re.search(r"=\s*\{.*?\}|\breturn\b\s*\{.*?\}|\[.*?\{.*?\}.*?\]", line):
+                formatted_code.append("    " * indent_level + line)
                 continue
 
             match = re.match(r"(def\s+\w+\s*\(.*?\))\s*\{(.*)\}", line)
@@ -70,7 +73,7 @@ class BryInterpreter:
                         formatted_code.append("    " * (indent_level + 1) + stmt)
                 continue
 
-            if "{" in line:
+            if "{" in line and not re.search(r"=\s*\{|:\s*\{", line):
                 line = line.replace("{", ":")
                 formatted_code.append("    " * indent_level + line)
                 block_stack.append("{")
