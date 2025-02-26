@@ -12,3 +12,4 @@ I am trying to implement full single line code support eventually for the C and 
 You can uncomment the print line that prints the translated code if you need that for some reason.
 It supports both regular Python without brackets and with brackets. 
 Also definitions with brackets are ignored so no need to worry about those.
+Yes, it has print F support. I somehow did something bython couldn't do. It's also light weight.
