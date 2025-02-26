@@ -3,3 +3,6 @@
 
 Python with brackets but not a pip package. It is a single script. It is that simple. Everything is in one script.
 I have an example script above. It can also be used as an object if that's what you need.
+
+Bry.py is the actual interpreter if that is what you came for.
+Everything is in the Brackthon folder.
