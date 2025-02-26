@@ -1,5 +1,6 @@
 # PyPP-Interpreter [Python ++]
-![Image Description](https://drive.usercontent.google.com/download?id=1lSj1mLsXlnfAtuKrr1BSHydMBCPw85cc&export=download&authuser=0)
+
+![Image Description](https://camo.githubusercontent.com/9ed3968ea99e6abae4985775fe3183ddac3885a73058ae9e88971b0b06ab10d7/68747470733a2f2f64726976652e75736572636f6e74656e742e676f6f676c652e636f6d2f646f776e6c6f61643f69643d316c536a316d4c73586c6e664174754b72723142534879644d4243507738356363266578706f72743d646f776e6c6f61642661757468757365723d30)
 
 Python with brackets. It is a single script. It's that simple. Everything is in one script.
 
