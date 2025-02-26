@@ -1,9 +1,9 @@
-# Brython-Interpreter
+# PyPP-Interpreter [Python ++]
 ![Image Description](https://drive.usercontent.google.com/download?id=1pzSfyMqItfW1uNN5JNk6MJz8T3SteoVA&export=download&authuser=0)
 
 Python with brackets. It is a single script. It's that simple. Everything is in one script.
 
-Bry.py is the actual interpreter if that is what you came for.
+PyPP.py is the actual interpreter if that is what you came for.
 
 I have an example script above. It can also be used as an object if that's what you need.
 Everything is in the Brackthon folder.
