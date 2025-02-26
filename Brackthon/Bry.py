@@ -13,7 +13,6 @@ class BryInterpreter:
 
         for line in lines:
             line = line.strip()
-
             if not line:
                 continue
 
@@ -21,56 +20,94 @@ class BryInterpreter:
                 formatted_code.append("    " * indent_level + line)
                 continue
 
+            match = re.match(r"(\w+)\s*=\s*lambda\s*\((.*?)\)\s*\{(.*?)\}", line)
+            if match:
+                func_name, params, body = match.groups()
+                formatted_code.append(
+                    "    " * indent_level + f"{func_name} = lambda {params}: {body.strip()}"
+                )
+                continue
+
+            match = re.match(r"switch\s*\((.*?)\)\s*\{(.*?)\}", line, re.DOTALL)
+            if match:
+                switch_var, body = match.groups()
+                formatted_code.append("    " * indent_level + f"match {switch_var}:")
+                indent_level += 1
+
+                cases = re.findall(r"case\s+(.*?)\s*\{(.*?)\}", body, re.DOTALL)
+                for case_value, case_body in cases:
+                    formatted_code.append("    " * indent_level + f"case {case_value}:")
+                    indent_level += 1
+                    for stmt in case_body.split(";"):
+                        stmt = stmt.strip()
+                        if stmt:
+                            formatted_code.append("    " * indent_level + stmt)
+                    indent_level -= 1
+
+                default_match = re.search(r"default\s*\{(.*?)\}", body, re.DOTALL)
+                if default_match:
+                    default_body = default_match.group(1)
+                    formatted_code.append("    " * indent_level + "case _:")
+                    indent_level += 1
+                    for stmt in default_body.split(";"):
+                        stmt = stmt.strip()
+                        if stmt:
+                            formatted_code.append("    " * indent_level + stmt)
+                    indent_level -= 1
+
+                indent_level -= 1
+                continue
+
             match = re.match(r"(def\s+\w+\s*\(.*?\))\s*\{(.*)\}", line)
             if match:
                 function_def, body = match.groups()
                 formatted_code.append("    " * indent_level + function_def + ":")
+                indent_level += 1
                 for stmt in body.split(';'):
                     stmt = stmt.strip()
                     if stmt:
-                        formatted_code.append("    " * (indent_level + 1) + stmt)
+                        formatted_code.append("    " * indent_level + stmt)
+                indent_level -= 1
                 continue
 
             match = re.match(r"(class\s+\w+)\s*\{(.*)\}", line)
             if match:
                 class_def, body = match.groups()
                 formatted_code.append("    " * indent_level + class_def + ":")
+                indent_level += 1
                 body = body.strip().rstrip(";")
-
                 methods = re.findall(r"(def\s+\w+\s*\(.*?\))\s*\{(.*?)\}", body)
                 for method_def, method_body in methods:
-                    formatted_code.append("    " * (indent_level + 1) + method_def + ":")
+                    formatted_code.append("    " * indent_level + method_def + ":")
                     for stmt in method_body.split(";"):
                         stmt = stmt.strip()
                         if stmt:
-                            formatted_code.append("    " * (indent_level + 2) + stmt)
-
-                remaining_body = re.sub(r"(def\s+\w+\s*\(.*?\))\s*\{.*?\}", "", body).strip()
-                if remaining_body:
-                    for stmt in remaining_body.split(";"):
-                        stmt = stmt.strip()
-                        if stmt:
                             formatted_code.append("    " * (indent_level + 1) + stmt)
+                indent_level -= 1
                 continue
 
             match = re.match(r"(if|elif|else)\s*(\(?.*?\)?)\s*\{(.*)\}", line)
             if match:
                 keyword, condition, body = match.groups()
                 formatted_code.append("    " * indent_level + f"{keyword} {condition}:")
+                indent_level += 1
                 for stmt in body.split(';'):
                     stmt = stmt.strip()
                     if stmt:
-                        formatted_code.append("    " * (indent_level + 1) + stmt)
+                        formatted_code.append("    " * indent_level + stmt)
+                indent_level -= 1
                 continue
 
             match = re.match(r"(while|for)\s*(\(?.*?\)?)\s*\{(.*)\}", line)
             if match:
                 keyword, condition, body = match.groups()
                 formatted_code.append("    " * indent_level + f"{keyword} {condition}:")
+                indent_level += 1
                 for stmt in body.split(';'):
                     stmt = stmt.strip()
                     if stmt:
-                        formatted_code.append("    " * (indent_level + 1) + stmt)
+                        formatted_code.append("    " * indent_level + stmt)
+                indent_level -= 1
                 continue
 
             if "{" in line and not re.search(r"=\s*\{|:\s*\{", line):
@@ -111,8 +148,6 @@ class BryInterpreter:
                 code = f.read()
 
             python_code = self.tokenize(code)
-            #print("Transpiled Python Code:\n" + python_code + "\n") # converted code
             self.parse_and_execute(python_code)
-
         except FileNotFoundError:
             print("Error: File not found.")
