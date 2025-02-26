@@ -6,3 +6,8 @@ I have an example script above. It can also be used as an object if that's what 
 
 Bry.py is the actual interpreter if that is what you came for.
 Everything is in the Brackthon folder.
+Also, you can write (each block of code like definitions or class definitions) in single lines.
+I am trying to implement full single line code support eventually for the C and java fans.
+You can uncomment the print line that prints the translated code if you need that for some reason.
+It supports both regular Python without brackets and with brackets. 
+Also definitions with brackets are ignored so no need to worry about those.
