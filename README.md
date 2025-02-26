@@ -8,8 +8,8 @@ Bry.py is the actual interpreter if that is what you came for.
 I have an example script above. It can also be used as an object if that's what you need.
 Everything is in the Brackthon folder.
 Also, you can write (each block of code like definitions or class definitions) in single lines.
-I am trying to implement full single line code support eventually for the C and java fans.
+I am trying to implement full single line code support eventually for the C and Java fans.
 You can uncomment the print line that prints the translated code if you need that for some reason.
 It supports both regular Python without brackets and with brackets. 
 Also definitions with brackets are ignored so no need to worry about those.
-Yes, it has print F support. I somehow did something bython couldn't do. It's also light weight.
+Yes, it has print F support. I somehow did something bython couldn't do. It's also lightweight.
