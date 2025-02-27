@@ -4,10 +4,13 @@
 
 Python with brackets. It is a single script. It's that simple. Everything is in one script.
 
-!IMPORTANT! if __name__ == "__main__" WILL NOT WORK!
-Since the interpreter runs things it should be this:
+!IMPORTANT! 
+if __name__ == "__main__" WILL NOT WORK!
+Since the interpreter runs things, it should be this:
 if __name__ == "PyPP"
-It will do the same thing, but will fix the interpreter just breezing past your code and not running it.
+It will do the same thing, 
+but will fix the interpreter just breezing past your code-
+and not running it.
 
 PyPP.py is the actual interpreter if that is what you came for.
 
