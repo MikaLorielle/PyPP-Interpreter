@@ -1,0 +1,77 @@
+import customtkinter as ctk;
+import time;
+import random;
+
+class AnimatedGUI {
+    def __init__(self, root) {
+        self.root = root;
+        self.root.title("Complex Animated GUI");
+        self.root.geometry("800x600");
+
+        self.colors = ["#ff5733", "#33ff57", "#3357ff", "#f7ff33", "#ff33f7"];
+        self.color_index = 0;
+
+        self.label = ctk.CTkLabel(self.root, text="Bouncing Label!", font=("Arial", 24));
+        self.label.place(x=50, y=250);
+
+        self.button = ctk.CTkButton(self.root, text="Open Window", command=self.open_window);
+        self.button.pack(pady=10);
+
+        self.slider_label = ctk.CTkLabel(self.root, text="Slider Value: 50");
+        self.slider_label.pack(pady=5);
+        self.slider = ctk.CTkSlider(self.root, from_=0, to=100, command=self.update_slider);
+        self.slider.set(50);
+        self.slider.pack(pady=5);
+
+        self.bounce_direction = 1;
+        self.label_x = 50;
+
+        self.animate_background();
+        self.animate_label();
+    }
+
+    def animate_background(self) {
+        self.root.configure(bg=self.colors[self.color_index]);
+        self.color_index = (self.color_index + 1) % len(self.colors);
+        self.root.after(1500, self.animate_background);
+    }
+
+    def animate_label(self) {
+        if self.label_x >= 600 or self.label_x <= 50 {
+            self.bounce_direction *= -1;
+        }
+        self.label_x += 10 * self.bounce_direction;
+        self.label.place(x=self.label_x, y=250);
+        self.root.after(50, self.animate_label);
+    }
+
+    def open_window(self) {
+        self.new_window = ctk.CTkToplevel(self.root);
+        self.new_window.geometry("400x300");
+        self.new_window.title("Popup Window");
+
+        self.popup_label = ctk.CTkLabel(self.new_window, text="Hello, I'm a new window!", font=("Arial", 20));
+        self.popup_label.pack(pady=20);
+
+        self.fade_in_opacity = 0;
+        self.fade_in_effect();
+    }
+
+    def fade_in_effect(self) {
+        if self.fade_in_opacity <= 1 {
+            self.new_window.attributes("-alpha", self.fade_in_opacity);
+            self.fade_in_opacity += 0.1;
+            self.root.after(50, self.fade_in_effect);
+        }
+    }
+
+    def update_slider(self, value) {
+        self.slider_label.configure(text=f"Slider Value: {int(value)}");
+    }
+}
+
+if __name__ == "PyPP" {
+    root = ctk.CTk();
+    gui = AnimatedGUI(root);
+    root.mainloop();
+}
