@@ -128,6 +128,13 @@ class PyPPInterpreter:
                 if block_stack:
                     block_stack.pop()
                 indent_level = max(0, indent_level - 1)
+                line = line.replace("}", "").strip()
+                if line:
+                    statements = line.split(';')
+                    for stmt in statements:
+                        stmt = stmt.strip()
+                        if stmt:
+                            formatted_code.append("    " * indent_level + stmt)
                 continue
 
             statements = line.split(';')
