@@ -9,7 +9,7 @@ if __name__ == "__main__" WILL NOT WORK!
 Since the interpreter runs things, it should be this:
 if __name__ == "PyPP"
 It will do the same thing, 
-but will fix the interpreter just breezing past your code-
+but will fix the interpreter just breezing past your code
 and not running it.
 
 PyPP.py is the actual interpreter if that is what you came for.
