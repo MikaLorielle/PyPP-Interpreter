@@ -14,6 +14,10 @@ and not running it.
 
 PyPP.py is the actual interpreter if that is what you came for.
 
+New feature. PYL{ any regular python syntax code }PYL
+for conflicts.
+*before you ask yes multiline works.
+
 I have an example script above. It can also be used as an object if that's what you need.
 Everything is in the Brackthon folder.
 Also, you can write (each block of code like definitions or class definitions) in single lines.
@@ -23,8 +27,6 @@ It supports both regular Python without brackets and with brackets.
 Also definitions with brackets are ignored so no need to worry about those.
 Yes, it has print F support. I somehow did something bython couldn't do. It's also lightweight.
 
-New feature. PYL{ any regular python syntax code }PYL
-for conflicts.
 
 
 <!-- ![Image Description](https://drive.usercontent.google.com/download?id=1lSj1mLsXlnfAtuKrr1BSHydMBCPw85cc&export=download&authuser=0) --->
