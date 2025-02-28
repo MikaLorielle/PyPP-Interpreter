@@ -10,8 +10,20 @@ class PyPPInterpreter:
         indent_level = 0
         formatted_code = []
         block_stack = []
+        raw_mode = False
 
         for line in lines:
+            if line.lstrip().startswith("PYL{"):
+                raw_mode = True
+                continue
+            elif line.rstrip().endswith("}PYL"):
+                raw_mode = False
+                continue
+
+            if raw_mode:
+                formatted_code.append(line)
+                continue
+
             line = line.strip()
             if not line:
                 continue
