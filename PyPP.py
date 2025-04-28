@@ -6,6 +6,7 @@ class PyPPInterpreter:
         self.indent_level = 0
         self.formatted_code = []
         self.block_stack = []
+        self.block_type_stack = []
         self.raw_mode = False
 
     def add_line(self, stmt):
@@ -37,7 +38,7 @@ class PyPPInterpreter:
 
         if token.startswith("case "):
             value = token[5:].strip()
-            self.add_line(f"case {value}")
+            self.add_line(f"case {value}:")
             return
 
         if token.startswith("default"):
@@ -85,11 +86,20 @@ class PyPPInterpreter:
 
                 if token == "{":
                     if buffer:
-                        self.handle_statement(buffer + ":")
+                        if buffer.startswith("switch("):
+                            self.handle_statement(buffer)
+                            self.block_type_stack.append("switch")
+                        elif buffer.startswith("case ") or buffer.startswith("default"):
+                            self.handle_statement(buffer)
+                            self.block_type_stack.append("case")
+                        else:
+                            self.handle_statement(buffer + ":")
+                            self.block_type_stack.append("normal")
                         buffer = ""
                     else:
                         if self.formatted_code:
                             self.formatted_code[-1] += ":"
+                            self.block_type_stack.append("normal")
                     self.block_stack.append("{")
                     self.indent_level += 1
 
@@ -99,6 +109,7 @@ class PyPPInterpreter:
                         buffer = ""
                     if self.block_stack:
                         self.block_stack.pop()
+                        block_type = self.block_type_stack.pop() if self.block_type_stack else "normal"
                         self.indent_level = max(0, self.indent_level - 1)
 
                 elif token == ";":
