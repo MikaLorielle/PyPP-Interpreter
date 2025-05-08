@@ -1,6 +1,30 @@
 import re
 import ast
 
+
+def strip_comments_and_strings(code):
+    string_literals = []
+
+    def replacer(match):
+        s = match.group(0)
+        if s.startswith(("'", '"')) or s.startswith(('f"', "f'", 'r"', "r'", 'b"', "b'")):
+            string_literals.append(s)
+            return f"__STR{len(string_literals)-1}__"
+        return ''
+
+    pattern = re.compile(r'''
+        (?P<string>
+            (?:[frbuFRBU]{0,2})     
+            (''' + r"""'''(?:\\.|[^\\])*?'''""" + r'''|"""(?:\\.|[^\\])*?"""|  
+            '(?:\\.|[^'])*?'|"(?:\\.|[^"])*?")  
+        )
+        |(?P<mlcomment>/\*.*?\*/)
+        |(?P<slcomment>//[^\n]*)
+    ''', re.VERBOSE | re.DOTALL)
+
+    cleaned_code = pattern.sub(replacer, code)
+    return cleaned_code, string_literals
+
 class PyPPInterpreter:
     def __init__(self):
         self.indent_level = 0
@@ -33,7 +57,6 @@ class PyPPInterpreter:
         if token.startswith("switch("):
             expr = re.match(r"switch\((.*?)\)", token).group(1)
             self.add_line(f"match {expr}:")
-            self.indent_level += 1
             return
 
         if token.startswith("case "):
@@ -52,10 +75,13 @@ class PyPPInterpreter:
         self.add_line(token)
 
     def tokenize(self, code):
+        code, string_literals = strip_comments_and_strings(code)
+
         lines = code.splitlines()
         self.indent_level = 0
         self.formatted_code = []
         self.block_stack = []
+        self.block_type_stack = []
         self.raw_mode = False
 
         for line in lines:
@@ -74,6 +100,9 @@ class PyPPInterpreter:
             if self.raw_mode:
                 self.formatted_code.append(raw_line)
                 continue
+
+            line = re.sub(r'^\s*fn\b', 'def', line)
+            line = re.sub(r'->\s*([^:\s]+)', r'-> \1:', line)
 
             line = line.replace(r'\{', '{').replace(r'\}', '}')
 
@@ -109,7 +138,8 @@ class PyPPInterpreter:
                         buffer = ""
                     if self.block_stack:
                         self.block_stack.pop()
-                        block_type = self.block_type_stack.pop() if self.block_type_stack else "normal"
+                        if self.block_type_stack:
+                            self.block_type_stack.pop()
                         self.indent_level = max(0, self.indent_level - 1)
 
                 elif token == ";":
@@ -126,7 +156,10 @@ class PyPPInterpreter:
             if buffer:
                 self.handle_statement(buffer)
 
-        return "\n".join(self.formatted_code)
+        result = "\n".join(self.formatted_code)
+        for i, s in enumerate(string_literals):
+            result = result.replace(f"__STR{i}__", s)
+        return result
 
     def parse_and_execute(self, code):
         try:
