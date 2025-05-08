@@ -101,7 +101,7 @@ class PyPPInterpreter:
                 self.formatted_code.append(raw_line)
                 continue
 
-            line = re.sub(r'^\s*fn\b', 'def', line)
+            line = re.sub(r'\bfn\s+(?=\w+\s*\()', 'def ', line)
             line = re.sub(r'->\s*([^:\s]+)', r'-> \1:', line)
 
             line = line.replace(r'\{', '{').replace(r'\}', '}')
