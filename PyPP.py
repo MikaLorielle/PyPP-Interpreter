@@ -84,22 +84,40 @@ class PyPPInterpreter:
         self.block_type_stack = []
         self.raw_mode = False
 
+        in_raw_block = False
         for line in lines:
             raw_line = line
-            line = line.strip()
-            if not line:
+            stripped_line = line.strip()
+            if not stripped_line:
                 continue
 
-            if line.lstrip().startswith("PYL{"):
-                self.raw_mode = True
+            if stripped_line.startswith("PYL{") and stripped_line.endswith("}PYL"):
+                raw_code = stripped_line[4:-4].strip()
+                self.formatted_code.append(raw_code)
                 continue
-            elif line.rstrip().endswith("}PYL"):
-                self.raw_mode = False
+            elif stripped_line.startswith("PYL{"):
+                in_raw_block = True
+                raw_code = stripped_line[4:].strip()
+                if raw_code:
+                    self.formatted_code.append(raw_code)
+                continue
+            elif stripped_line.endswith("}PYL"):
+                in_raw_block = False
+                raw_code = stripped_line[:-4].strip()
+                if raw_code:
+                    self.formatted_code.append(raw_code)
                 continue
 
-            if self.raw_mode:
+            if in_raw_block:
                 self.formatted_code.append(raw_line)
                 continue
+
+            pyl_inline_pattern = re.compile(r'PYL\{(.*?)\}PYL')
+            if pyl_inline_pattern.search(line):
+                def replacer(match):
+                    return f"\n{match.group(1)}\n"
+
+                line = pyl_inline_pattern.sub(replacer, line)
 
             line = re.sub(r'\bfn\s+(?=\w+\s*\()', 'def ', line)
             line = re.sub(r'->\s*([^:\s]+)', r'-> \1:', line)
@@ -178,7 +196,7 @@ class PyPPInterpreter:
                 code = f.read()
 
             python_code = self.tokenize(code)
-            #print(python_code)
+            print(python_code)
             self.parse_and_execute(python_code)
         except FileNotFoundError:
             print("Error: File not found.")
