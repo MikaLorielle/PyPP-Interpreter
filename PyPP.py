@@ -196,7 +196,7 @@ class PyPPInterpreter:
                 code = f.read()
 
             python_code = self.tokenize(code)
-            print(python_code)
+            #print(python_code)
             self.parse_and_execute(python_code)
         except FileNotFoundError:
             print("Error: File not found.")
