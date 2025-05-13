@@ -120,6 +120,8 @@ class PyPPInterpreter:
                 line = pyl_inline_pattern.sub(replacer, line)
 
             line = re.sub(r'\bfn\s+(?=\w+\s*\()', 'def ', line)
+            line = re.sub(r'\bfunc\s+(?=\w+\s*\()', 'def ', line)
+            line = re.sub(r'\bfunction\s+(?=\w+\s*\()', 'def ', line)
             line = re.sub(r'->\s*([^:\s]+)', r'-> \1:', line)
 
             line = line.replace(r'\{', '{').replace(r'\}', '}')
