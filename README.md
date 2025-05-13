@@ -4,6 +4,7 @@
 
 Python with brackets. It is a single script. It's that simple. Everything is in one script.
 
+[Not So Important] PYPP.pypp does not have the PYL{ }PYL bug fix. just use the 'PyPP.py' & 'main.py'.
 !IMPORTANT! 
 if __name__ == "__main__" WILL NOT WORK!
 Since the interpreter runs things, it should be this:
