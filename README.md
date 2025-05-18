@@ -4,30 +4,30 @@
 
 Python with brackets. It is a single script. It's that simple. Everything is in one script.
 
-[Not So Important] PYPP.pypp does not have the PYL{ }PYL bug fix. just use the 'PyPP.py' & 'main.py'.
+[Not So Important] PYPP.pypp does not have the PYL{ }PYL bug fix. Just use the 'PyPP.py' & 'main.py'.
 !IMPORTANT! 
 if __name__ == "__main__" WILL NOT WORK!
 Since the interpreter runs things, it should be this:
 if __name__ == "PyPP"
 It will do the same thing, 
-but will fix the interpreter just breezing past your code
+But will fix the interpreter just breezing past your code
 and not running it.
 
 PyPP.py is the actual interpreter if that is what you came for.
 
-New feature. PYL{ any regular python syntax code }PYL
+New feature. PYL{ any regular Python syntax code }PYL
 for conflicts.
-*before you ask yes multiline works.
+*Before you ask, yes, multiline works.
 
 I have an example script above. It can also be used as an object if that's what you need.
 Everything is in the Brackthon folder.
-Also, you can write (each block of code like definitions or class definitions) in single lines.
-I am trying to implement full single line code support eventually for the C and Java fans.
+Also, you can write (each block of code, like definitions or class definitions) in a single line.
+I am trying to implement full single-line code support eventually for the C and Java fans.
 You can uncomment the print line that prints the translated code if you need that for some reason.
 It supports both regular Python without brackets and with brackets. 
-Also definitions with brackets are ignored so no need to worry about those.
-Yes, it has print F support. I somehow did something bython couldn't do. It's also lightweight.
-Also PyPP.pypp is a joke. It's the interpreter written in its own language.
+Also, definitions with brackets are ignored, so no need to worry about those.
+Yes, it has print F support. I somehow did something Bython couldn't do. It's also lightweight.
+Also PyPP.pypp is a joke. It's the interpreter written in its language.
 
 
 <!-- ![Image Description](https://drive.usercontent.google.com/download?id=1lSj1mLsXlnfAtuKrr1BSHydMBCPw85cc&export=download&authuser=0) --->
